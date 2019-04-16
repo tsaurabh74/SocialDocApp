@@ -5,7 +5,10 @@ import com.socialdocapp.service.GetConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LikePostDAO {
 
@@ -29,5 +32,23 @@ public class LikePostDAO {
             e.printStackTrace();
         }
         return al;
+    }
+     public static boolean saveLike(int postId,int doctorId){
+        boolean status=false;
+        Connection con;
+        con=GetConnection.getConnection();
+        try {
+            PreparedStatement ps=con.prepareStatement("insert into like_post(post_id,doctor_id) values (?,?)");
+             ps.setInt(1, postId);
+             ps.setInt(2, doctorId);
+             int i=ps.executeUpdate();
+             if(i>0){
+                 status=true;
+             }
+        } catch (SQLException ex) {
+            Logger.getLogger(LikePostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return status;
+       
     }
 }

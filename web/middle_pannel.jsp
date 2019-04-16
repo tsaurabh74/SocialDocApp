@@ -3,6 +3,26 @@
 <%@page import="com.socialdocapp.dao.PostDao"%>
 <%@page import="com.socialdocapp.model.Post"%>
 <%@page import="java.util.ArrayList"%>
+
+
+<script>
+    function likePost(postId,doctorId){
+        var xhttp=new XMLHttpRequest();
+        xhttp.open('post','like_post.jsp?postId='+ postId +'&doctorId='+doctorId,true);
+        xhttp.send();
+        
+        xhttp.onreadystatechange= function(){
+            if(xhttp.status==400 && xhttp.readyState==4)
+            {
+                document.getElementById("liked").innerHTML=this.responseText;
+                    
+                }
+                 
+            }
+    }
+    
+    
+    </script>
 <!-- Post Create Box
                         ================================================= -->
 
@@ -75,8 +95,9 @@
                 <p class="text-muted">Published a <%=date%></p>
             </div>
             <div class="reaction">
+                <div id="liked"></div>
                 <a class="btn text-green"><i class="icon ion-thumbsup"></i> 13</a>
-                <a class="btn text-red"><i class="fa fa-thumbs-down"></i> 0</a>
+                <button onclick="likePost(<%=post.getId()%>,<%=session.getAttribute("id")%>)" btn btn-sm text-red>Like</button>
             </div>
             <div class="line-divider"></div>
             <div class="post-text">
@@ -88,7 +109,7 @@
                 <p><a href="timeline.html" class="profile-link">Diana </a><i class="em em-laughing"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </p>
             </div>
             <div class="post-comment">
-                <img src="images/users/user-1.jpg" alt="" class="profile-photo-sm" />
+                <img src="profile/<%=session.getAttribute("profile")%>" alt="" class="profile-photo-sm" />
                 <input type="text" class="form-control" placeholder="Post a comment">
             </div>
 
